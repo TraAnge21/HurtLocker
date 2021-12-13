@@ -6,35 +6,38 @@ import java.util.regex.Pattern;
 import java.util.*;
 
 public class GroceryListParser {
+        private String nameItem;
+        private Double priceItem;
+        private String typeItem;
+        private String expiration;
+
+    public
 
 
-//    A method to find the nameToBeReplaced
-    public Boolean isNameFound ( String nameTobeReplaced) {
 
-        Pattern ptInText= Pattern.compile(nameTobeReplaced);
-        Matcher nameMatcher= ptInText.matcher("RawData.txt");
-        return nameMatcher.find();
-    }
+
 
     // naMe:Milk;price:3.23;type:Food;expiration:1/25/2016##
-    [:@ ^ * % !] or [.]
-            \w+  macthe one or more words
-            (r|s|a)
-            //naMe:Milk;
-            (\w+)[:](\w+)[:@ ^ * % !]
-            // price:3.23;
-            (\w+)[:](\d+.?\d+) [:@ ^ * % !]
-            // type:Food;
-            (\w+)[:](\w+)[:@ ^ * % !]
-            // expiration:1/25/2016
+//    [:@ ^ * % !] or [.]
+//            \w+  macthe one or more words
+//            \w or [a-zA-Z]
+//            (r|s|a)
+//            //naMe:Milk;
+//            \w+ : \w+ [;:@ ^ * % !]
+//            // price:3.23;
+//            \w+ : \d+\.?\d+ [;:@ ^ * % !]
+//            // type:Food;
+//            \w+ : \w+ [;:@ ^ * % !]
+//            // expiration:1/25/2016
+//            \w+ : \d {1,2}/\\d{1,2}/\\d{4}
 
 
 
     // 4 groups to match name, price, type and expiration
     // key and value are separated by (:)
-            [:]
-    // a key and its following key are separated by (:, @, ^, *, % !)
-            [:@ ^ * % !]
+//            [:]
+//    // a key and its following key are separated by (:, @, ^, *, % !)
+//            [:@ ^ * % !]
     // each item in the list is separated by (##)
 
 
@@ -45,16 +48,37 @@ public class GroceryListParser {
 //    [:, @, ^, *, %]
 //    .\d{2}
 
-// A method to write the file text containing the Hamlet.txt
+    public GroceryItem parseOneItemGrocery (String OneUnitOfItem) throws Exception  {
 
-    public void fileWriting ( String hamletText) throws FileNotFoundException {
+        // naMe:Milk;
+        // price:3.23;
+        // type:Food;
+        // expiration:1/25/2016##
 
-        String textFileName = "RawData.txt";
-        FileOutputStream outputStream = new FileOutputStream(textFileName);
-        Formatter formatter= new Formatter(outputStream);
-        formatter.format(hamletText);
+        String regX = "(\\w+)" + ":" + "(\\w+)" + "[;:@ ^ * % !]" +
+                "(\\w+)" + ":" + "(\\d+\\.?\\d+)" + "[;:@ ^ * % !]" +
+                "\\w+" + ":" + "\\d+\\.?\\d+" + "[;:@ ^ * % !]" +
+                "\\w+" + ":" + "\\d {1,2}/\\d{1,2}/\\d{4}" + "##";
+
+        Pattern pt = Pattern.compile(regX);
+        Matcher mt = pt.matcher(OneUnitOfItem);
+
+        if ( mt.matches()) {
+            String nameItem = mt.group(2).toLowerCase();
+            Double priceItem = Double.valueOf(mt.group(4).toLowerCase());
+            return new GroceryItem ( nameItem,priceItem);
+
+        } else {
+            throw new Exception();
+        }
+
 
     }
+
+
+
+
+
 
 
 
