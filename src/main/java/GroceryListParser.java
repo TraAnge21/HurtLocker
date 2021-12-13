@@ -16,7 +16,34 @@ public class GroceryListParser {
         return nameMatcher.find();
     }
 
+    // naMe:Milk;price:3.23;type:Food;expiration:1/25/2016##
+    [:@ ^ * % !] or [.]
+            \w+  macthe one or more words
+            (r|s|a)
+            //naMe:Milk;
+            (\w+)[:](\w+)[:@ ^ * % !]
+            // price:3.23;
+            (\w+)[:](\d+.?\d+) [:@ ^ * % !]
+            // type:Food;
+            (\w+)[:](\w+)[:@ ^ * % !]
+            // expiration:1/25/2016
 
+
+
+    // 4 groups to match name, price, type and expiration
+    // key and value are separated by (:)
+            [:]
+    // a key and its following key are separated by (:, @, ^, *, % !)
+            [:@ ^ * % !]
+    // each item in the list is separated by (##)
+
+
+
+    // In JerkSON Key and Value could be seperated by using a any of the following (:, @, ^, *, %) and (!)
+    // Json Key and Value pairs are seperated by a ',' in JerkSON its '##
+
+//    [:, @, ^, *, %]
+//    .\d{2}
 
 // A method to write the file text containing the Hamlet.txt
 
